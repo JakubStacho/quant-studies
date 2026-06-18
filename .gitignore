@@ -1,0 +1,10 @@
+# symlinks
+activate-venv-quant
+
+# directories
+data/*
+venv-quant/*
+
+# file types
+*.csv
+*.parquet
