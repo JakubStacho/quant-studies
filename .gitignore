@@ -2,7 +2,6 @@
 activate-venv-quant
 
 # directories
-data/*
 venv-quant/*
 utils/__pycache__/*
 
