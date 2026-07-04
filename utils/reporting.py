@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
 
 from metrics import (get_compound_returns,
                       get_drawdown,
@@ -70,7 +71,7 @@ def performance_report(returns_df, risk_free_returns, vals_per_year=12):
 
     compound_returns = get_compound_returns(returns_df)
     rolling_drawdown = get_drawdown(returns_df)
-    rolling_sharpe   = get_annualized_sharpe_rolling(excess_returns_df, vals_per_year)
+    rolling_sharpe   = get_annualized_sharpe_rolling(excess_returns_df, window=36, vals_per_year=vals_per_year)
 
     fig, axs = plt.subplots(nrows=3, figsize=(9, 6), sharex=True)
 
@@ -98,6 +99,8 @@ def performance_report(returns_df, risk_free_returns, vals_per_year=12):
 
     for ax in axs:
         set_date_ticks(ax)
+        ax.yaxis.set_minor_locator(AutoMinorLocator()) 
+        ax.tick_params(top=True, bottom=True, left=True, right=True)
         ax.grid(axis='y', linewidth=0.75, alpha=0.5)
 
     fig.tight_layout()

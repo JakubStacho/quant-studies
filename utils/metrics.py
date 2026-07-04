@@ -31,6 +31,14 @@ def get_annualized_sharpe_rolling(excess_returns_df, window=36, vals_per_year=12
                                                           raw    = True)
 
 
+def get_rolling_correlation(returns_df, reference_series, window=36):
+    '''
+    Returns a dataframe of the rolling correlation between
+    each column in returns_df and a reference series
+    '''
+    return returns_df.rolling(window=window).corr(reference_series)
+
+
 def get_annualized_volatility(returns_df, vals_per_year=12):
     '''
     Returns the annualized volatility (standard
@@ -38,6 +46,14 @@ def get_annualized_volatility(returns_df, vals_per_year=12):
     the given returns df
     '''
     return returns_df.std() * np.sqrt(vals_per_year)
+
+
+def get_annualized_mean_return(returns_df, vals_per_year=12):
+    '''
+    Returns the annualized arithmetic mean return for
+    each column in the given returns df
+    '''
+    return returns_df.mean() * vals_per_year
 
 
 def get_drawdown(returns_df):
