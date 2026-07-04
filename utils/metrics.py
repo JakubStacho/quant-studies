@@ -31,6 +31,15 @@ def get_annualized_sharpe_rolling(excess_returns_df, window=36, vals_per_year=12
                                                           raw    = True)
 
 
+def get_annualized_volatility(returns_df, vals_per_year=12):
+    '''
+    Returns the annualized volatility (standard
+    deviation of returns) for each column in
+    the given returns df
+    '''
+    return returns_df.std() * np.sqrt(vals_per_year)
+
+
 def get_drawdown(returns_df):
     '''
     Returns a dataframe of the drawdown

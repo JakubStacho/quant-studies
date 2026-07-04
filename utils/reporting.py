@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from metrics import (get_compound_returns,
                       get_drawdown,
                       get_cagr,
+                      get_annualized_volatility,
                       get_annualized_sharpe_series,
                       get_annualized_sharpe_rolling,
                       )
@@ -21,28 +22,36 @@ def get_summary_stats(returns_df, risk_free_returns, vals_per_year=12):
     excess_returns   = returns_df - risk_free_returns.values.reshape(-1, 1)
 
     stats = pd.DataFrame({'CAGR [%]'         : get_cagr(compound_returns) * 100,
+                          'Volatility [%]'   : get_annualized_volatility(returns_df, vals_per_year) * 100,
                           'Max Drawdown [%]' : drawdown.min() * 100,
                           'Sharpe'           : excess_returns.apply(get_annualized_sharpe_series,
-                                                                     vals_per_year=vals_per_year),
+                                                                    vals_per_year=vals_per_year),
                           }).T
 
     return stats
 
 
-def print_summary_stats(stats, col_width=12):
+def print_summary_stats(stats):
     '''
-    Prints a dataframe of summary stats (as returned
-    by get_summary_stats) as a nicely aligned table
+    Prints a dataframe of summary stats (as returned by
+    get_summary_stats) as a nicely aligned table, with
+    tickers as rows and stat names as columns. Each
+    column is sized to its own content, with a single
+    space of padding on either side.
     '''
-    label_width = max(len(label) for label in stats.index)
+    stats = stats.T
 
-    header = ' ' * label_width + ''.join(f'{col:>{col_width}}' for col in stats.columns)
+    label_width = max(len(label) for label in stats.index)
+    value_strs  = stats.map(lambda v: f'{v:.2f}')
+    col_widths  = {col: max(len(col), value_strs[col].str.len().max()) for col in stats.columns}
+
+    header = f'{"":<{label_width}} ' + ''.join(f' {col:^{col_widths[col]}} ' for col in stats.columns)
     print(header)
     print('-' * len(header))
 
-    for label, row in stats.iterrows():
-        values = ''.join(f'{value:>{col_width}.2f}' for value in row)
-        print(f'{label:<{label_width}}{values}')
+    for label, row in value_strs.iterrows():
+        values = ''.join(f' {row[col]:^{col_widths[col]}} ' for col in stats.columns)
+        print(f'{label:<{label_width}} {values}')
 
 
 def performance_report(returns_df, risk_free_returns, vals_per_year=12):
