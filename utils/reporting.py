@@ -89,6 +89,7 @@ def performance_report(returns_df, risk_free_returns, vals_per_year=12):
 
     for ax in axs:
         set_date_ticks(ax)
+        ax.grid(axis='y', linewidth=0.75, alpha=0.5)
 
     fig.tight_layout()
     plt.show()
