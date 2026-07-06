@@ -24,7 +24,7 @@ def solve_min_variance(mean_returns, cov_matrix, target_return=None):
     Solves for the long-only minimum-variance portfolio weights
     (weights sum to 1, each between 0 and 1). If target_return is
     given, adds an equality constraint so this solves one point on
-    the efficient frontier; if None, solves the Global Minimum
+    the efficient frontier. If None, solves the Global Minimum
     Variance portfolio
     '''
     n_assets = len(mean_returns)
@@ -34,7 +34,7 @@ def solve_min_variance(mean_returns, cov_matrix, target_return=None):
         constraints.append({'type': 'eq', 'fun': lambda w: w @ mean_returns.values - target_return})
 
     bounds = [(0, 1)] * n_assets
-    x0     = np.repeat(1 / n_assets, n_assets)
+    x0     = np.repeat(1 / n_assets, n_assets) # equal weight first guess
 
     result = minimize(lambda w: w @ cov_matrix.values @ w,
                        x0,
@@ -62,7 +62,7 @@ def solve_max_sharpe(mean_returns, cov_matrix, risk_free_rate):
 
     constraints = [{'type': 'eq', 'fun': lambda w: np.sum(w) - 1}]
     bounds      = [(0, 1)] * n_assets
-    x0          = np.repeat(1 / n_assets, n_assets)
+    x0          = np.repeat(1 / n_assets, n_assets) # equal weight first guess
 
     result = minimize(negative_sharpe,
                        x0,

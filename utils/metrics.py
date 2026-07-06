@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def get_compound_returns(returns_df):
@@ -37,6 +38,32 @@ def get_rolling_correlation(returns_df, reference_series, window=36):
     each column in returns_df and a reference series
     '''
     return returns_df.rolling(window=window).corr(reference_series)
+
+
+def get_periodic_correlation(returns_df, reference_ticker, freq='ME'):
+    '''
+    Returns a dataframe of the correlation between each column in
+    returns_df and reference_ticker (also a column in returns_df),
+    computed independently within each calendar period (e.g. each
+    month) rather than smoothed over a rolling window
+    '''
+    grouped_corr = returns_df.groupby(pd.Grouper(freq=freq)).corr()
+
+    return grouped_corr[reference_ticker].unstack(level=1)
+
+
+def get_correlation_std_error(returns_df):
+    '''
+    Returns a dataframe of the approximate standard error
+    for each pairwise correlation in returns_df, using the
+    large-sample approximation
+    
+    SE(r) ~= (1 - r^2) / sqrt(n - 1)
+    '''
+    corr_matrix = returns_df.corr()
+    n_obs       = len(returns_df)
+
+    return (1 - corr_matrix**2) / np.sqrt(n_obs - 1)
 
 
 def get_annualized_volatility(returns_df, vals_per_year=12):
