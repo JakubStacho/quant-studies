@@ -1,4 +1,4 @@
-# quant-studies
+# 📝 Quant Finance Studies
 
 A personal sandbox for learning and exploring quantitative finance concepts through code. Projects here range from walkthroughs to scrappy experiments.
 
