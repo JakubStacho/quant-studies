@@ -16,7 +16,11 @@ Combining assets with different risk/return profiles can result in a portfolio w
 
 MVO is only as good as its inputs. Over 20 years, the standard error on the mean expected return on each asset is comparable to the differences between assets. Hence, the optimizer is largely reacting to estimation noise, not real signal.
 
+<center>
+
 ![Mean return uncertainty](figures/mean-return-uncertainty.png)
+
+</center>
 
 **3. In-sample results are smoother but not realistically achievable**
 
@@ -26,20 +30,32 @@ Built on the full history, the optimized portfolios roughly halve SPY's drawdown
 
 I estimate how an average retail investor could use MVO by rebalancing every month on a trailing 5-year window. SPY still outperforms the optimized portfolios on raw return. However, the 2008 drawdown is not included in this sample due to the 5-year lookback so it may be a bit skewed.
 
+<center>
+
 ![Walk-forward backtest](figures/backtest.png)
 ![Walk-forward weights](figures/backtest-weights.png)
+
+</center>
 
 **5. MVO performance improves significantly with forecast**
 
 I blend a controllable amount of perfect foresight return into the expected return estimate. Even leaking 1–2% of next-month's actual return lifts the backtested Sharpe dramatically. This illustrates how valuable a good forecast is and also how much lookahead bias can skew backtest results.
 
+<center>
+
 ![Forecast skill sensitivity](figures/forecast-skill.png)
+
+</center>
 
 **6. Diversification fails when you need it most**
 
 MVO assumes a stable covariance matrix. But in the 2008 crisis, the correlations of "diversified" assets to SPY jumped toward 0.5 exactly when the hedge was supposed to help. This demonstrates that even though assets may have historically low baseline correlations, in times of crisis this type of diversification may not help as much as one would hope.
 
+<center>
+
 ![Crisis correlations](figures/crisis-correlations.png)
+
+</center>
 
 ## Key Takeaways
 
