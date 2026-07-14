@@ -104,11 +104,11 @@ def performance_report(returns_df, risk_free_returns, vals_per_year=12):
         ax.grid(axis='y', linewidth=0.75, alpha=0.5)
 
     fig.tight_layout()
-    plt.show()
+    # plt.show()
 
     return_dict = {'compound_returns' : compound_returns,
                    'drawdown'         : rolling_drawdown,
                    'sharpe'           : rolling_sharpe,
                    }
 
-    return return_dict
+    return return_dict, fig, ax
